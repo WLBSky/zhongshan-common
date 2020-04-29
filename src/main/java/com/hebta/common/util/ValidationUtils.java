@@ -28,6 +28,9 @@ import com.hebta.common.exception.BusinessException;
  */
 public class ValidationUtils {
 
+	/**
+	 * Validator
+	 */
     private static Validator validator = Validation
             .buildDefaultValidatorFactory().getValidator();
 

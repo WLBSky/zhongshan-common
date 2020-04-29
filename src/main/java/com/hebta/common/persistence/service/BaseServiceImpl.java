@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.pagehelper.PageHelper;
@@ -68,12 +70,12 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
 
     @Override
     public T selectByProperty(String column, Object value) {
-        return baseMapper.selectOne(buildEntity(column, value));
+        return baseMapper.selectOneByExample(buildEntity(column, value));
     }
 
     @Override
     public List<T> listByProperty(String column, Object value) {
-        return baseMapper.select(buildEntity(column, value));
+        return baseMapper.selectByExample(buildEntity(column, value));
     }
 
     @Override
@@ -139,17 +141,14 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    @SuppressWarnings("unchecked")
-    private T buildEntity(String column, Object value) {
+    private Example buildEntity(String column, Object value) {
         try {
             column = underlineToCamel(column);
             Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
                     .getActualTypeArguments()[1];
-            T t = entityClass.newInstance();
-            PropertyDescriptor pd = new PropertyDescriptor(column, entityClass, "get" + column, "set" + column);
-            Method wM = pd.getWriteMethod();
-            wM.invoke(t, value);
-            return t;
+            Example ex = new Example(entityClass);
+            ex.and().andEqualTo(column, value);
+            return ex;
         } catch (Exception e) {
             log.error("buildEntity error.", e);
             return null;
