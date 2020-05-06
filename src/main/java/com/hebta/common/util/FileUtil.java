@@ -7,14 +7,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 
 public class FileUtil {
 
     public static void createFile(File tempFile, MultipartFile file) {
-        try {
-            try (FileOutputStream fos = FileUtils.openOutputStream(tempFile)) {
-                IOUtils.copy(file.getInputStream(), fos);
-            }
+        try (FileOutputStream fos = FileUtils.openOutputStream(tempFile); InputStream inputStream = file.getInputStream()) {
+            IOUtils.copy(inputStream, fos);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
