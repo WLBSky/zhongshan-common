@@ -20,7 +20,7 @@
         <joda-time.version>2.10</joda-time.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>2.0.4.RELEASE</spring-boot.version>
+        <spring-boot.version>2.5.12</spring-boot.version>
         <redis.clients.version>2.9.0</redis.clients.version>
         <swagger2.version>2.8.0</swagger2.version>
         <mysql.version>5.1.41</mysql.version>
